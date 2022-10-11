@@ -2,6 +2,7 @@
 using Business.Concrete;
 using Context;
 using Core.DataAccess.Abstract;
+using Core.DataAccess.Concrete;
 using Core.DataAccess.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -28,6 +29,11 @@ namespace TodoAppBackEnd
                 options.UseSqlServer(connectionString);
                 // options.EnableSensitiveDataLogging();
             });
+            services.AddDbContext<DbContext, TodoContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
+            services.AddScoped(typeof(IGenericRepository<>), typeof(TodoRepository<>));
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUserService, UserManager>();
 
